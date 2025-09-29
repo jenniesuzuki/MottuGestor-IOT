@@ -3,7 +3,7 @@
 
 ## Serviços
 - **Mosquitto** (MQTT)
-- **Roboflow Inference (self-hosted)** em `http://localhost:9001` (CPU)
+- **YOLO** (visão computacional, reconhecimento de motos)
 - **FastAPI** (ingestão, persistência SQLite, SSE, endpoints)
 - **Simuladores** (RFID, Zona, Tamper)
 
@@ -18,7 +18,8 @@ docker compose up -d --build
 ## Detecção por imagem (Visão)
 Enviar uma imagem para detecção:
 ```
-*TODO*
+# Copie o caminho da imagem e insira no campo file, exemplo:
+curl.exe -F "file=@C:\Users\jenni\Downloads\moto.jpg" -F "confidence=0.25" http://127.0.0.1:8000/vision/detect
 ```
 
 ## Tabelas SQLite
