@@ -1,0 +1,38 @@
+
+version: "3.9"
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  api:
+    build: ./fastapi_app
+    container_name: mottu-api
+    restart: unless-stopped
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - DB_URL=sqlite:///./mottu.db
+      - VISION_MODE=${VISION_MODE}
+      - LOCAL_MODEL=${LOCAL_MODEL}
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mosquitto
+
+  simulators:
+    build: ./simulators
+    container_name: mottu-simulators
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+    depends_on:
+      - mosquitto
+    command: ["python", "-u", "run_all.py"]
