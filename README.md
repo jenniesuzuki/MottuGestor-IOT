@@ -11,7 +11,7 @@
 ```
 docker compose up -d --build
 ```
-- Dashboard: http://localhost:8000/index.html
+- Dashboard: http://localhost:8000
 - Métricas: http://localhost:8000/metrics
 - Relatório de localização: http://localhost:8000/report/location
 
