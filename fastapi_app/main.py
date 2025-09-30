@@ -18,14 +18,12 @@ MQTT_PORT = int(os.getenv("MQTT_PORT", "1883"))
 DB_URL = os.getenv("DB_URL", "sqlite:///./mottu.db")
 INFERENCE_URL = os.getenv("INFERENCE_URL", "http://roboflow:9001")
 ROBOFLOW_MODEL = os.getenv("ROBOFLOW_MODEL", "workspace/project/1")
-VISION_MODE = os.getenv("VISION_MODE", "roboflow")  # "local" | "roboflow"
-LOCAL_MODEL = os.getenv("LOCAL_MODEL", "yolov8n.pt")  # baixado automaticamente no 1º uso
+VISION_MODE = os.getenv("VISION_MODE", "roboflow")
+LOCAL_MODEL = os.getenv("LOCAL_MODEL", "yolov8n.pt")
 
 app = FastAPI(title="Mottu Gestor IoT+CV API", version="1.1")
-# serve todos os arquivos da pasta /app (onde está o index.html copiado no Dockerfile)
 app.mount("/static", StaticFiles(directory="."), name="static")
 
-# opcional: rota explícita para "/" (garante servir o index mesmo se o mount mudar)
 @app.get("/")
 def root():
     return FileResponse("index.html")
@@ -99,7 +97,6 @@ def init_db():
 
 init_db()
 
-# Carrega YOLO somente se for modo local
 if VISION_MODE.lower() == "local":
     from ultralytics import YOLO as _YOLO
     YOLO = _YOLO(LOCAL_MODEL)
